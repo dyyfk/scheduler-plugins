@@ -34,8 +34,8 @@ plugins:
     enabled: # A higher weight is given to NetworkOverhead to favor allocation schemes with lower latency.
       - name: NetworkOverhead
         weight: 5
-      - name: BalancedAllocation
-        weight: 1
+      # - name: BalancedAllocation
+      #   weight: 1
 
 # Customize the enabled plugins' config.
 # Refer to the "pluginConfig" section of manifests/<plugin>/scheduler-config.yaml.
