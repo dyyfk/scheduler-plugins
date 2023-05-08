@@ -17,18 +17,37 @@ controller:
 # as they need extra RBAC privileges on metrics.k8s.io.
 
 plugins:
-  enabled: ["Coscheduling","CapacityScheduling","NodeResourceTopologyMatch","NodeResourcesAllocatable"]
-  disabled: ["PrioritySort"] # only in-tree plugins need to be defined here
+  queueSort:
+    enabled:
+      - name: TopologicalSort
+    disabled:
+      - name: "*"
+  preFilter:
+    enabled:
+      - name: NetworkOverhead
+  filter:
+    enabled:
+      - name: NetworkOverhead
+  score:
+    disabled: # Preferably avoid the combination of NodeResourcesFit with NetworkOverhead
+      - name: NodeResourcesFit
+    enabled: # A higher weight is given to NetworkOverhead to favor allocation schemes with lower latency.
+      - name: NetworkOverhead
+        weight: 5
+      # - name: BalancedAllocation
+      #   weight: 1
 
 # Customize the enabled plugins' config.
 # Refer to the "pluginConfig" section of manifests/<plugin>/scheduler-config.yaml.
 # For example, for Coscheduling plugin, you want to customize the permit waiting timeout to 10 seconds:
 pluginConfig:
-- name: Coscheduling
+- name: TopologicalSort
   args:
-    permitWaitingTimeSeconds: 10 # default is 60
-# Or, customize the other plugins
-# - name: NodeResourceTopologyMatch
-#   args:
-#     scoringStrategy:
-#       type: MostAllocated # default is LeastAllocated
+    namespaces:
+      - "default"
+- name: NetworkOverhead
+  args:
+    namespaces:
+      - "default"
+    weightsName: "UserDefined" # The respective weights to consider in the plugins
+    networkTopologyName: "net-topology-test" # networkTopology CR to be used by the plugins

@@ -67,12 +67,12 @@ rules:
   resources: ["podgroups", "elasticquotas", "podgroups/status", "elasticquotas/status"]
   verbs: ["get", "list", "watch", "create", "delete", "update", "patch"]
 # for network-aware plugins add the following lines (scheduler-plugins v.0.25.7)
-#- apiGroups: [ "appgroup.diktyo.x-k8s.io" ]
-#  resources: [ "appgroups" ]
-#  verbs: [ "get", "list", "watch", "create", "delete", "update", "patch" ]
-#- apiGroups: [ "networktopology.diktyo.x-k8s.io" ]
-#  resources: [ "networktopologies" ]
-#  verbs: [ "get", "list", "watch", "create", "delete", "update", "patch" ]
+- apiGroups: [ "appgroup.diktyo.x-k8s.io" ]
+  resources: [ "appgroups" ]
+  verbs: [ "get", "list", "watch", "create", "delete", "update", "patch" ]
+- apiGroups: [ "networktopology.diktyo.x-k8s.io" ]
+  resources: [ "networktopologies" ]
+  verbs: [ "get", "list", "watch", "create", "delete", "update", "patch" ]
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
